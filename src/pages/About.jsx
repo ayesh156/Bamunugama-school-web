@@ -1,4 +1,4 @@
-import { Target, Eye, BookOpen, Heart, Shield, Sparkles } from 'lucide-react';
+import { Target, Eye, BookOpen, Heart, Shield, Sparkles, Music } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 const values = [
@@ -25,16 +25,17 @@ const values = [
 ];
 
 const milestones = [
-  { year: '1972', titleKey: 'about.timeline.1972.title', descKey: 'about.timeline.1972.desc' },
-  { year: '1985', titleKey: 'about.timeline.1985.title', descKey: 'about.timeline.1985.desc' },
-  { year: '1998', titleKey: 'about.timeline.1998.title', descKey: 'about.timeline.1998.desc' },
-  { year: '2010', titleKey: 'about.timeline.2010.title', descKey: 'about.timeline.2010.desc' },
-  { year: '2020', titleKey: 'about.timeline.2020.title', descKey: 'about.timeline.2020.desc' },
+  { year: '1913', titleKey: 'about.timeline.1913.title', descKey: 'about.timeline.1913.desc' },
+  { year: '1917', titleKey: 'about.timeline.1917.title', descKey: 'about.timeline.1917.desc' },
+  { year: '1940', titleKey: 'about.timeline.1940.title', descKey: 'about.timeline.1940.desc' },
+  { year: '1957', titleKey: 'about.timeline.1957.title', descKey: 'about.timeline.1957.desc' },
+  { year: '1965', titleKey: 'about.timeline.1965.title', descKey: 'about.timeline.1965.desc' },
+  { year: '1977', titleKey: 'about.timeline.1977.title', descKey: 'about.timeline.1977.desc' },
   { year: '2026', titleKey: 'about.timeline.2026.title', descKey: 'about.timeline.2026.desc' },
 ];
 
 export default function About() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <div className="pt-20">
@@ -80,8 +81,8 @@ export default function About() {
                 {t('about.history.title')}
               </h2>
               <div className="space-y-4 text-gray-600 dark:text-gray-300 leading-relaxed">
-                <p>{t('about.history.para1')}</p>
-                <p>{t('about.history.para2')}</p>
+                <p dangerouslySetInnerHTML={{ __html: t('about.history.para1') }} />
+                <p dangerouslySetInnerHTML={{ __html: t('about.history.para2') }} />
                 <p dangerouslySetInnerHTML={{ __html: t('about.history.para3') }} />
               </div>
             </div>
@@ -89,7 +90,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Motto & Vision Mission */}
+      {/* Motto */}
       <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -103,20 +104,69 @@ export default function About() {
             </div>
           </div>
 
+          {/* Vision & Mission - Real document text */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-md card-hover">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-md card-hover border-l-4 border-blue-500">
               <div className="w-14 h-14 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-4">
                 <Eye className="w-7 h-7 text-primary-500 dark:text-primary-300" />
               </div>
               <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-3">{t('about.vision.title')}</h3>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{t('about.vision.text')}</p>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                {language === 'si' ? t('about.vision.text') : t('about.vision.text')}
+              </p>
+              {language === 'si' && (
+                <p className="text-gray-500 dark:text-gray-400 text-sm mt-2 italic" lang="si">
+                  {t('about.vision.text_si')}
+                </p>
+              )}
             </div>
-            <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-md card-hover">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-md card-hover border-l-4 border-rose-500">
               <div className="w-14 h-14 rounded-xl bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center mb-4">
                 <Target className="w-7 h-7 text-accent-500 dark:text-accent-300" />
               </div>
               <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-3">{t('about.mission.title')}</h3>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{t('about.mission.text')}</p>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                {language === 'si' ? t('about.mission.text') : t('about.mission.text')}
+              </p>
+              {language === 'en' && (
+                <p className="text-gray-500 dark:text-gray-400 text-sm mt-2 italic" lang="si">
+                  {t('about.mission.text_si')}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* School Anthem Callout */}
+      <section className="py-20 bg-gradient-to-br from-primary-900 via-primary-800 to-accent-900 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-gold-500 blur-3xl" />
+          <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-accent-500 blur-3xl" />
+        </div>
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/20 text-white border border-white/30 mb-4">
+            {t('about.anthem.badge')}
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-8">
+            {t('about.anthem.title')}
+          </h2>
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 sm:p-12 border border-white/20 shadow-2xl">
+            <div className="flex justify-center mb-6">
+              <div className="w-16 h-16 rounded-full bg-gold-500/20 flex items-center justify-center">
+                <Music className="w-8 h-8 text-gold-400" />
+              </div>
+            </div>
+            <div className="space-y-3 text-center" lang="si">
+              <p className="text-xl sm:text-2xl text-white font-medium leading-relaxed">{t('about.anthem.line1')}</p>
+              <p className="text-xl sm:text-2xl text-white font-medium leading-relaxed">{t('about.anthem.line2')}</p>
+              <p className="text-xl sm:text-2xl text-white font-medium leading-relaxed">{t('about.anthem.line3')}</p>
+              <p className="text-xl sm:text-2xl text-white font-medium leading-relaxed">{t('about.anthem.line4')}</p>
+            </div>
+            <div className="mt-8 pt-6 border-t border-white/20">
+              <p className="text-sm text-gray-300 italic">
+                {t('about.anthem.note')}
+              </p>
             </div>
           </div>
         </div>

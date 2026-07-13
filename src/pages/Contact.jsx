@@ -1,5 +1,9 @@
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
+import {
+  Mail, Phone, MapPin, Send, CheckCircle,
+  GraduationCap, ShieldCheck, Calendar, Award,
+  Building2, Globe, School, ArrowUpRight,
+} from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Contact() {
@@ -47,26 +51,69 @@ export default function Contact() {
     setTimeout(() => setSubmitted(false), 5000);
   };
 
-  const contactInfo = [
+  const schoolInfoCards = [
+    {
+      icon: School,
+      labelKey: 'contact.info.school_name',
+      label: null,
+      value: null,
+      fullWidth: true,
+      highlight: true,
+    },
     {
       icon: MapPin,
       labelKey: 'contact.info.address',
-      valueKey: 'contact.info.address_value',
+      label: t('contact.info.address'),
+      value: t('contact.info.address_value'),
+    },
+    {
+      icon: GraduationCap,
+      labelKey: 'contact.info.principal',
+      label: t('contact.info.principal'),
+      value: t('contact.info.principal_value'),
+    },
+    {
+      icon: ShieldCheck,
+      labelKey: 'contact.info.classification',
+      label: t('contact.info.classification'),
+      value: t('contact.info.classification_value'),
+    },
+    {
+      icon: Calendar,
+      labelKey: 'contact.info.established',
+      label: t('contact.info.established'),
+      value: t('contact.info.established_value'),
+    },
+    {
+      icon: Award,
+      labelKey: 'contact.info.codes',
+      label: t('contact.info.codes'),
+      value: t('contact.info.codes_value'),
+    },
+    {
+      icon: Building2,
+      labelKey: 'contact.info.administration',
+      label: t('contact.info.administration'),
+      value: t('contact.info.administration_value'),
     },
     {
       icon: Phone,
       labelKey: 'contact.info.phone',
-      valueKey: 'contact.info.phone_value',
+      label: t('contact.info.phone'),
+      value: t('contact.info.phone_value'),
     },
     {
       icon: Mail,
       labelKey: 'contact.info.email',
-      valueKey: 'contact.info.email_value',
+      label: t('contact.info.email'),
+      value: t('contact.info.email_value'),
     },
     {
-      icon: Clock,
-      labelKey: 'contact.info.hours',
-      valueKey: 'contact.info.hours_value',
+      icon: Globe,
+      labelKey: 'contact.info.website',
+      label: t('contact.info.website'),
+      value: t('contact.info.website_value'),
+      isLink: true,
     },
   ];
 
@@ -95,40 +142,80 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Contact Content */}
+      {/* School Identity & Contact Form Grid */}
       <section className="py-20 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Contact Info Cards */}
-            <div className="lg:col-span-1 space-y-6">
-              {contactInfo.map((info) => {
-                const Icon = info.icon;
-                return (
-                  <div
-                    key={info.labelKey}
-                    className="flex items-start gap-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-800 card-hover"
-                  >
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shrink-0">
-                      <Icon className="w-5 h-5 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-semibold text-gray-800 dark:text-white">
-                        {t(info.labelKey)}
-                      </h3>
-                      {t(info.valueKey).split('\n').map((line, i) => (
-                        <p key={i} className="text-sm text-gray-500 dark:text-gray-400">
-                          {line}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
+            {/* Left: School Identity Profile Grid */}
+            <div className="lg:col-span-2 space-y-5">
+              <div className="relative">
+                <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-6 flex items-center gap-2">
+                  <School className="w-5 h-5 text-primary-500" />
+                  <span>{t('contact.info.school_name')}</span>
+                </h2>
+                <div className="grid grid-cols-1 gap-4">
+                  {schoolInfoCards.map((info) => {
+                    const Icon = info.icon;
+                    return (
+                      <div
+                        key={info.labelKey}
+                        className={`group flex items-start gap-4 p-4 rounded-xl transition-all duration-300 ${
+                          info.highlight
+                            ? 'bg-gradient-to-br from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 border border-primary-100 dark:border-primary-800/30'
+                            : 'bg-gray-50 dark:bg-gray-800/80 border border-transparent hover:border-gray-200 dark:hover:border-gray-700'
+                        }`}
+                      >
+                        <div
+                          className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 ${
+                            info.highlight
+                              ? 'bg-gradient-to-br from-primary-500 to-accent-500 shadow-md'
+                              : 'bg-gradient-to-br from-primary-500/10 to-accent-500/10 dark:from-primary-500/20 dark:to-accent-500/20'
+                          }`}
+                        >
+                          <Icon
+                            className={`w-5 h-5 ${
+                              info.highlight ? 'text-white' : 'text-primary-600 dark:text-primary-400'
+                            }`}
+                          />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          {info.label && (
+                            <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-0.5">
+                              {info.label}
+                            </p>
+                          )}
+                          {info.isLink ? (
+                            <a
+                              href={`https://${info.value}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 hover:underline inline-flex items-center gap-1 transition-colors"
+                            >
+                              {info.value}
+                              <ArrowUpRight className="w-3 h-3" />
+                            </a>
+                          ) : (
+                            <p
+                              className={`${
+                                info.highlight
+                                  ? 'text-base font-bold text-gray-800 dark:text-white'
+                                  : 'text-sm font-semibold text-gray-700 dark:text-gray-200'
+                              } break-words`}
+                            >
+                              {info.value || info.labelKey}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
 
-            {/* Contact Form */}
-            <div className="lg:col-span-2">
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 sm:p-8 shadow-md">
+            {/* Right: Contact Form */}
+            <div className="lg:col-span-3">
+              <div className="bg-gray-50 dark:bg-gray-800/80 rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-100 dark:border-gray-700/50">
                 {submitted ? (
                   <div className="flex flex-col items-center justify-center py-16 text-center animate-fade-in">
                     <div className="w-20 h-20 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-6">
@@ -142,23 +229,25 @@ export default function Contact() {
                     </p>
                     <button
                       onClick={() => setSubmitted(false)}
-                      className="mt-6 px-6 py-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 text-white font-medium hover:shadow-lg transition-all cursor-pointer"
+                      className="mt-6 px-6 py-2.5 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 text-white font-medium hover:shadow-lg hover:shadow-primary-500/25 transition-all duration-300 cursor-pointer"
                     >
                       {t('contact.form.send_another')}
                     </button>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} noValidate>
-                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">
+                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6 flex items-center gap-2">
+                      <Send className="w-5 h-5 text-primary-500" />
                       {t('contact.form.title')}
                     </h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                       <div>
                         <label
                           htmlFor="name"
-                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
                         >
-                          {t('contact.form.name')} <span className="text-red-500">{t('contact.form.required')}</span>
+                          {t('contact.form.name')}{' '}
+                          <span className="text-red-500">{t('contact.form.required')}</span>
                         </label>
                         <input
                           type="text"
@@ -166,23 +255,27 @@ export default function Contact() {
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
-                          className={`w-full px-4 py-2.5 rounded-xl border ${
+                          className={`w-full px-4 py-3 rounded-xl border bg-white dark:bg-slate-800 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all ${
                             errors.name
                               ? 'border-red-400 focus:ring-red-400'
-                              : 'border-gray-200 dark:border-gray-700 focus:ring-primary-500'
-                          } bg-white dark:bg-gray-900 text-gray-800 dark:text-white focus:ring-2 focus:border-transparent outline-none transition-all`}
+                              : 'border-slate-200 dark:border-slate-700'
+                          }`}
                           placeholder={t('contact.form.name_placeholder')}
                         />
                         {errors.name && (
-                          <p className="text-xs text-red-500 mt-1">{errors.name}</p>
+                          <p className="text-xs text-red-500 mt-1.5 flex items-center gap-1">
+                            <span className="w-1 h-1 rounded-full bg-red-500 inline-block" />
+                            {errors.name}
+                          </p>
                         )}
                       </div>
                       <div>
                         <label
                           htmlFor="email"
-                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
                         >
-                          {t('contact.form.email')} <span className="text-red-500">{t('contact.form.required')}</span>
+                          {t('contact.form.email')}{' '}
+                          <span className="text-red-500">{t('contact.form.required')}</span>
                         </label>
                         <input
                           type="email"
@@ -190,15 +283,18 @@ export default function Contact() {
                           name="email"
                           value={formData.email}
                           onChange={handleChange}
-                          className={`w-full px-4 py-2.5 rounded-xl border ${
+                          className={`w-full px-4 py-3 rounded-xl border bg-white dark:bg-slate-800 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all ${
                             errors.email
                               ? 'border-red-400 focus:ring-red-400'
-                              : 'border-gray-200 dark:border-gray-700 focus:ring-primary-500'
-                          } bg-white dark:bg-gray-900 text-gray-800 dark:text-white focus:ring-2 focus:border-transparent outline-none transition-all`}
+                              : 'border-slate-200 dark:border-slate-700'
+                          }`}
                           placeholder={t('contact.form.email_placeholder')}
                         />
                         {errors.email && (
-                          <p className="text-xs text-red-500 mt-1">{errors.email}</p>
+                          <p className="text-xs text-red-500 mt-1.5 flex items-center gap-1">
+                            <span className="w-1 h-1 rounded-full bg-red-500 inline-block" />
+                            {errors.email}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -206,7 +302,7 @@ export default function Contact() {
                       <div>
                         <label
                           htmlFor="phone"
-                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
                         >
                           {t('contact.form.phone')}
                         </label>
@@ -216,14 +312,14 @@ export default function Contact() {
                           name="phone"
                           value={formData.phone}
                           onChange={handleChange}
-                          className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
+                          className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
                           placeholder={t('contact.form.phone_placeholder')}
                         />
                       </div>
                       <div>
                         <label
                           htmlFor="subject"
-                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
                         >
                           {t('contact.form.subject')}
                         </label>
@@ -232,7 +328,7 @@ export default function Contact() {
                           name="subject"
                           value={formData.subject}
                           onChange={handleChange}
-                          className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
+                          className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
                         >
                           <option value="">{t('contact.form.subject_placeholder')}</option>
                           <option value="admissions">{t('contact.form.subject_admissions')}</option>
@@ -246,9 +342,10 @@ export default function Contact() {
                     <div className="mb-6">
                       <label
                         htmlFor="message"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
                       >
-                        {t('contact.form.message')} <span className="text-red-500">{t('contact.form.required')}</span>
+                        {t('contact.form.message')}{' '}
+                        <span className="text-red-500">{t('contact.form.required')}</span>
                       </label>
                       <textarea
                         id="message"
@@ -256,22 +353,25 @@ export default function Contact() {
                         rows={6}
                         value={formData.message}
                         onChange={handleChange}
-                        className={`w-full px-4 py-2.5 rounded-xl border ${
+                        className={`w-full px-4 py-3 rounded-xl border bg-white dark:bg-slate-800 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all resize-none ${
                           errors.message
                             ? 'border-red-400 focus:ring-red-400'
-                            : 'border-gray-200 dark:border-gray-700 focus:ring-primary-500'
-                        } bg-white dark:bg-gray-900 text-gray-800 dark:text-white focus:ring-2 focus:border-transparent outline-none transition-all resize-none`}
+                            : 'border-slate-200 dark:border-slate-700'
+                        }`}
                         placeholder={t('contact.form.message_placeholder')}
                       />
                       {errors.message && (
-                        <p className="text-xs text-red-500 mt-1">{errors.message}</p>
+                        <p className="text-xs text-red-500 mt-1.5 flex items-center gap-1">
+                          <span className="w-1 h-1 rounded-full bg-red-500 inline-block" />
+                          {errors.message}
+                        </p>
                       )}
                     </div>
                     <button
                       type="submit"
-                      className="w-full sm:w-auto px-8 py-3 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 text-white font-medium hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full sm:w-auto px-10 py-3.5 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold hover:shadow-lg hover:shadow-primary-500/25 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer group"
                     >
-                      <Send className="w-4 h-4" />
+                      <Send className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                       {t('contact.form.send')}
                     </button>
                   </form>
@@ -283,9 +383,9 @@ export default function Contact() {
       </section>
 
       {/* Google Maps Embed */}
-      <section className="py-12 bg-gray-50 dark:bg-gray-800">
+      <section className="py-16 bg-gray-50 dark:bg-gray-800/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-2xl overflow-hidden shadow-xl">
+          <div className="relative rounded-2xl overflow-hidden shadow-xl ring-1 ring-gray-200 dark:ring-gray-700/50">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3967.064906502132!2d80.59037359999999!3d6.121966700000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae14502c340b65f%3A0x3af2502df58b54da!2sBamunugama%20Navodya%20School!5e0!3m2!1sen!2slk!4v1783256427052!5m2!1sen!2slk"
               width="100%"

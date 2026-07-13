@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpen, Users, Trophy, Star } from 'lucide-react';
+import { ArrowRight, BookOpen, Users, Trophy, Star, FlaskConical, Laptop, Sprout, Award, Apple, Landmark } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -27,10 +27,49 @@ const newsItems = [
 ];
 
 const stats = [
-  { icon: Users, value: '850+', labelKey: 'home.stats.students' },
+  { icon: Users, value: '477+', labelKey: 'home.stats.students' },
   { icon: BookOpen, value: '35+', labelKey: 'home.stats.teachers' },
   { icon: Trophy, value: '25+', labelKey: 'home.stats.awards' },
   { icon: Star, value: '12', labelKey: 'home.stats.clubs' },
+];
+
+const snapshotItems = [
+  {
+    icon: FlaskConical,
+    titleKey: 'home.snapshot.lab.title',
+    descKey: 'home.snapshot.lab.desc',
+    gradient: 'from-blue-500 to-cyan-500',
+  },
+  {
+    icon: Laptop,
+    titleKey: 'home.snapshot.digital.title',
+    descKey: 'home.snapshot.digital.desc',
+    gradient: 'from-purple-500 to-pink-500',
+  },
+  {
+    icon: Sprout,
+    titleKey: 'home.snapshot.agriculture.title',
+    descKey: 'home.snapshot.agriculture.desc',
+    gradient: 'from-emerald-500 to-teal-500',
+  },
+  {
+    icon: Award,
+    titleKey: 'home.snapshot.medals.title',
+    descKey: 'home.snapshot.medals.desc',
+    gradient: 'from-amber-500 to-orange-500',
+  },
+  {
+    icon: Apple,
+    titleKey: 'home.snapshot.nutrition.title',
+    descKey: 'home.snapshot.nutrition.desc',
+    gradient: 'from-rose-500 to-red-500',
+  },
+  {
+    icon: Landmark,
+    titleKey: 'home.snapshot.heritage.title',
+    descKey: 'home.snapshot.heritage.desc',
+    gradient: 'from-gold-600 to-yellow-600',
+  },
 ];
 
 export default function Home() {
@@ -40,7 +79,6 @@ export default function Home() {
     <div>
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
@@ -121,8 +159,51 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Principal's Message */}
+      {/* Current Snapshot & Achievements Section */}
       <section className="py-20 bg-white dark:bg-gray-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <span className="text-xs font-semibold uppercase tracking-wider text-accent-500 dark:text-accent-400">
+              {t('home.snapshot.badge')}
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 dark:text-white mt-2">
+              {t('home.snapshot.title')}
+            </h2>
+            <p className="text-gray-500 dark:text-gray-400 mt-3 max-w-2xl mx-auto">
+              {t('home.snapshot.subtitle')}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {snapshotItems.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.titleKey}
+                  className="group relative bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 card-hover animate-fade-in overflow-hidden"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  {/* Gradient accent bar */}
+                  <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${item.gradient} transform origin-left transition-transform duration-300 scale-x-0 group-hover:scale-x-100`} />
+
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center mb-4 shadow-lg`}>
+                    <Icon className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-2">
+                    {t(item.titleKey)}
+                  </h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+                    {t(item.descKey)}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Principal's Message */}
+      <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="lg:w-1/3">
@@ -164,7 +245,7 @@ export default function Home() {
       </section>
 
       {/* News Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+      <section className="py-20 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <span className="text-xs font-semibold uppercase tracking-wider text-accent-500 dark:text-accent-400">
@@ -182,7 +263,7 @@ export default function Home() {
             {newsItems.map((item, index) => (
               <article
                 key={item.id}
-                className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-md card-hover animate-fade-in"
+                className="bg-gray-50 dark:bg-gray-800 rounded-2xl overflow-hidden shadow-md card-hover animate-fade-in"
                 style={{ animationDelay: `${index * 0.15}s` }}
               >
                 <div className="relative h-48 overflow-hidden">
