@@ -116,19 +116,19 @@ function AnthemPlayer() {
   ];
 
   return (
-    <div className="w-full max-w-xl mx-auto p-6 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl shadow-xl flex flex-col gap-4 mt-6">
+    <div className="w-full max-w-xl mx-auto p-6 rounded-2xl border border-slate-200 dark:border-slate-800/60 bg-white/80 dark:bg-slate-900/40 backdrop-blur-md shadow-xl flex flex-col gap-4 mt-6">
       {/* Hidden HTML5 audio element */}
       <audio ref={audioRef} preload="metadata" src={schoolAnthemData.audioUrl} />
 
       {/* Track meta — localized titles + lyric string */}
       <div className="flex flex-col items-center text-center gap-1">
-        <h3 className="text-lg font-bold text-gray-800 dark:text-white">
+        <h3 className="text-lg font-bold text-slate-800 dark:text-white">
           {schoolAnthemData.title.en}{' '}
-          <span className="text-base font-normal text-gray-500 dark:text-gray-400">
+          <span className="text-base font-normal text-slate-500 dark:text-gray-400">
             / {schoolAnthemData.title.si}
           </span>
         </h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 italic leading-relaxed" lang="si">
+        <p className="text-sm text-slate-500 dark:text-gray-400 italic leading-relaxed" lang="si">
           {schoolAnthemData.lyrics.si[0][0]}
         </p>
       </div>
@@ -137,7 +137,7 @@ function AnthemPlayer() {
       <div className="flex items-center gap-4">
         <button
           onClick={togglePlay}
-          className="w-14 h-14 rounded-full bg-gradient-to-r from-primary-500 to-indigo-600 text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform flex-shrink-0"
+          className="w-14 h-14 rounded-full bg-gradient-to-r from-primary-500 to-indigo-600 text-white flex items-center justify-center shadow-md dark:shadow-indigo-900/40 hover:scale-105 transition-transform flex-shrink-0"
           aria-label={isPlaying ? 'Pause' : 'Play'}
         >
           {isPlaying ? <Pause className="w-6 h-6 fill-white" /> : <Play className="w-6 h-6 fill-white ml-0.5" />}
@@ -161,7 +161,7 @@ function AnthemPlayer() {
       </div>
 
       {/* Time indicators */}
-      <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 font-mono -mt-1">
+      <div className="flex justify-between text-xs text-slate-500 dark:text-gray-400 font-mono -mt-1">
         <span>{formatTime(currentTime)}</span>
         <span>{formatTime(duration)}</span>
       </div>
@@ -171,7 +171,7 @@ function AnthemPlayer() {
         {[0, 1, 2, 3, 4, 5].map((i) => (
           <div
             key={i}
-            className="w-1.5 rounded-full bg-gradient-to-t from-primary-500 to-indigo-600 transition-all duration-300"
+            className="w-1.5 rounded-full bg-gradient-to-t from-primary-600 to-indigo-600 dark:from-primary-500 dark:to-indigo-500 transition-all duration-300"
             style={{
               height: isPlaying ? '100%' : '25%',
               animation: isPlaying ? eqAnimations[i] : 'none',
@@ -313,7 +313,7 @@ export default function About() {
       </section>
 
       {/* School Anthem — Premium Audio Player */}
-      <section className="py-20 bg-gradient-to-br from-primary-900 via-primary-800 to-accent-900 relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-slate-50 via-gray-100 to-indigo-50 dark:from-primary-900 dark:via-primary-800 dark:to-accent-900 text-slate-800 dark:text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-gold-500 blur-3xl" />
           <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-accent-500 blur-3xl" />
@@ -330,11 +330,11 @@ export default function About() {
           <AnthemPlayer />
 
           {/* Lyrics Display — Expandable Card (left-aligned, dynamic map) */}
-          <div className="mt-8 bg-white/10 backdrop-blur-md rounded-2xl p-8 sm:p-12 border border-white/20 shadow-2xl">
+          <div className="mt-8 bg-white/90 dark:bg-white/10 border border-slate-200 dark:border-white/20 shadow-2xl backdrop-blur-md rounded-2xl p-8 sm:p-12">
             {/* Verse 1 — always visible */}
             <div className="space-y-3 text-left max-w-md mx-auto font-medium tracking-wide leading-relaxed" lang="si">
               {anthemLyrics[0].map((line, i) => (
-                <p key={i} className="text-xl sm:text-2xl text-white leading-relaxed">{line}</p>
+                <p key={i} className="text-xl sm:text-2xl text-slate-700 dark:text-white leading-relaxed">{line}</p>
               ))}
             </div>
 
@@ -349,7 +349,7 @@ export default function About() {
                   <div key={vIdx} className="space-y-3" lang="si">
                     <div className="w-12 h-0.5 bg-white/20 mx-auto" />
                     {verse.map((line, lIdx) => (
-                      <p key={lIdx} className="text-xl sm:text-2xl text-white/90 leading-relaxed">{line}</p>
+                      <p key={lIdx} className="text-xl sm:text-2xl text-slate-700 dark:text-white leading-relaxed">{line}</p>
                     ))}
                   </div>
                 ))}
@@ -359,7 +359,7 @@ export default function About() {
             {/* Toggle Button */}
             <button
               onClick={() => setIsLyricsExpanded(!isLyricsExpanded)}
-              className="text-sm font-semibold tracking-wide text-primary-400 hover:text-primary-300 transition-colors flex items-center gap-1 mx-auto mt-6"
+              className="text-sm font-semibold tracking-wide text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors flex items-center gap-1 mx-auto mt-6"
             >
               {isLyricsExpanded
                 ? language === 'si' ? 'හකුලන්න' : t('about.anthem.show_less')
@@ -378,8 +378,8 @@ export default function About() {
             </button>
 
             {/* Bottom credit border */}
-            <div className="mt-8 pt-6 border-t border-white/20">
-              <p className="text-sm text-gray-300 italic">
+            <div className="mt-8 pt-6 border-t border-slate-200/60 dark:border-white/20">
+              <p className="text-sm text-slate-500 dark:text-gray-300 italic">
                 {t('about.anthem.note')}
               </p>
             </div>
