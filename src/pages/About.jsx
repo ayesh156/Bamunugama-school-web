@@ -1,5 +1,7 @@
-import { Target, Eye, BookOpen, Heart, Shield, Sparkles, Music } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Target, Eye, BookOpen, Heart, Shield, Sparkles, Maximize2, X, Play, Pause, ChevronDown, ChevronUp } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { schoolAnthemData } from '../data/mockData';
 
 const values = [
   {
@@ -25,7 +27,7 @@ const values = [
 ];
 
 const milestones = [
-  { year: '1913', titleKey: 'about.timeline.1913.title', descKey: 'about.timeline.1913.desc' },
+  { year: '1913', titleKey: 'about.timeline.1913.title', descKey: 'about.timeline.1913.desc', imageKey: 'about.timeline.1913.image_title', imageDescKey: 'about.timeline.1913.image_desc', viewDocKey: 'about.timeline.1913.view_doc', imageSrc: '/images/first-log-1913.png' },
   { year: '1917', titleKey: 'about.timeline.1917.title', descKey: 'about.timeline.1917.desc' },
   { year: '1940', titleKey: 'about.timeline.1940.title', descKey: 'about.timeline.1940.desc' },
   { year: '1957', titleKey: 'about.timeline.1957.title', descKey: 'about.timeline.1957.desc' },
@@ -34,8 +36,188 @@ const milestones = [
   { year: '2026', titleKey: 'about.timeline.2026.title', descKey: 'about.timeline.2026.desc' },
 ];
 
+/* ------------------------------------------------------------------ */
+/*  School Anthem Player – Custom HTML5 Audio with Premium UI          */
+/*  Direct Google Drive download stream via export=download API         */
+/*  Replaces deprecated Google Drive iframe /preview embed entirely.   */
+/* ------------------------------------------------------------------ */
+function AnthemPlayer() {
+  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const onTimeUpdate = () => setCurrentTime(audio.currentTime);
+    const onLoadedMetadata = () => setDuration(audio.duration);
+    const onEnded = () => {
+      setIsPlaying(false);
+      setCurrentTime(0);
+    };
+
+    audio.addEventListener('timeupdate', onTimeUpdate);
+    audio.addEventListener('loadedmetadata', onLoadedMetadata);
+    audio.addEventListener('ended', onEnded);
+
+    return () => {
+      audio.removeEventListener('timeupdate', onTimeUpdate);
+      audio.removeEventListener('loadedmetadata', onLoadedMetadata);
+      audio.removeEventListener('ended', onEnded);
+    };
+  }, []);
+
+  const togglePlay = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleSeek = (e) => {
+    const audio = audioRef.current;
+    if (!audio || !duration) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const fraction = Math.max(0, Math.min(1, x / rect.width));
+    const seekTime = fraction * duration;
+    audio.currentTime = seekTime;
+    setCurrentTime(seekTime);
+  };
+
+  const formatTime = (t) => {
+    if (!t || !isFinite(t)) return '0:00';
+    const m = Math.floor(t / 60);
+    const s = Math.floor(t % 60);
+    return `${m}:${s.toString().padStart(2, '0')}`;
+  };
+
+  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+
+  /* Equalizer bar animation keyframes injected once */
+  const equalizerStyleId = 'anthem-equalizer-keyframes';
+  if (typeof document !== 'undefined' && !document.getElementById(equalizerStyleId)) {
+    const style = document.createElement('style');
+    style.id = equalizerStyleId;
+    style.textContent = `
+      @keyframes eq-bar-1 { 0%,100% { height: 20%; } 50% { height: 90%; } }
+      @keyframes eq-bar-2 { 0%,100% { height: 60%; } 50% { height: 20%; } }
+      @keyframes eq-bar-3 { 0%,100% { height: 30%; } 50% { height: 80%; } }
+      @keyframes eq-bar-4 { 0%,100% { height: 70%; } 50% { height: 25%; } }
+      @keyframes eq-bar-5 { 0%,100% { height: 15%; } 50% { height: 75%; } }
+      @keyframes eq-bar-6 { 0%,100% { height: 50%; } 50% { height: 10%; } }
+    `;
+    document.head.appendChild(style);
+  }
+
+  const eqAnimations = [
+    'eq-bar-1 0.6s ease-in-out infinite',
+    'eq-bar-2 0.5s ease-in-out infinite',
+    'eq-bar-3 0.7s ease-in-out infinite',
+    'eq-bar-4 0.4s ease-in-out infinite',
+    'eq-bar-5 0.6s ease-in-out infinite',
+    'eq-bar-6 0.5s ease-in-out infinite',
+  ];
+
+  return (
+    <div className="w-full max-w-xl mx-auto p-6 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl shadow-xl flex flex-col gap-4 mt-6">
+      {/* Hidden HTML5 audio element */}
+      <audio ref={audioRef} preload="metadata" src={schoolAnthemData.audioUrl} />
+
+      {/* Track meta — localized titles + lyric string */}
+      <div className="flex flex-col items-center text-center gap-1">
+        <h3 className="text-lg font-bold text-gray-800 dark:text-white">
+          {schoolAnthemData.title.en}{' '}
+          <span className="text-base font-normal text-gray-500 dark:text-gray-400">
+            / {schoolAnthemData.title.si}
+          </span>
+        </h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400 italic leading-relaxed" lang="si">
+          {schoolAnthemData.lyrics.si[0][0]}
+        </p>
+      </div>
+
+      {/* Play / Pause toggle + seeker row */}
+      <div className="flex items-center gap-4">
+        <button
+          onClick={togglePlay}
+          className="w-14 h-14 rounded-full bg-gradient-to-r from-primary-500 to-indigo-600 text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform flex-shrink-0"
+          aria-label={isPlaying ? 'Pause' : 'Play'}
+        >
+          {isPlaying ? <Pause className="w-6 h-6 fill-white" /> : <Play className="w-6 h-6 fill-white ml-0.5" />}
+        </button>
+
+        {/* Seeker timeline */}
+        <div
+          className="flex-1 h-1 bg-slate-200 dark:bg-slate-700 rounded-lg overflow-hidden relative cursor-pointer group"
+          onClick={handleSeek}
+        >
+          <div
+            className="absolute inset-y-0 left-0 bg-gradient-to-r from-primary-500 to-indigo-600 rounded-lg transition-all duration-100"
+            style={{ width: `${progress}%` }}
+          />
+          {/* Thumb indicator */}
+          <div
+            className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-white border-2 border-primary-500 shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+            style={{ left: `calc(${progress}% - 7px)` }}
+          />
+        </div>
+      </div>
+
+      {/* Time indicators */}
+      <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 font-mono -mt-1">
+        <span>{formatTime(currentTime)}</span>
+        <span>{formatTime(duration)}</span>
+      </div>
+
+      {/* Equalizer animation — only animated when isPlaying */}
+      <div className="flex items-end justify-center gap-1 h-8 mt-1">
+        {[0, 1, 2, 3, 4, 5].map((i) => (
+          <div
+            key={i}
+            className="w-1.5 rounded-full bg-gradient-to-t from-primary-500 to-indigo-600 transition-all duration-300"
+            style={{
+              height: isPlaying ? '100%' : '25%',
+              animation: isPlaying ? eqAnimations[i] : 'none',
+              opacity: 0.6 + i * 0.06,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Main About Page                                                    */
+/* ------------------------------------------------------------------ */
 export default function About() {
   const { t, language } = useLanguage();
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState('');
+  const [lightboxTitle, setLightboxTitle] = useState('');
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [isLyricsExpanded, setIsLyricsExpanded] = useState(false);
+
+  const anthemLyrics = schoolAnthemData.lyrics[language === 'si' ? 'si' : 'en'];
+
+  const openLightbox = (src, title) => {
+    setLightboxImage(src);
+    setLightboxTitle(title);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+    setLightboxImage('');
+    setLightboxTitle('');
+  };
 
   return (
     <div className="pt-20">
@@ -126,7 +308,7 @@ export default function About() {
               </div>
               <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-3">{t('about.mission.title')}</h3>
               <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                {language === 'si' ? t('about.mission.text') : t('about.mission.text')}
+                {language === 'en' ? t('about.mission.text') : t('about.mission.text')}
               </p>
               {language === 'en' && (
                 <p className="text-gray-500 dark:text-gray-400 text-sm mt-2 italic" lang="si">
@@ -138,7 +320,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* School Anthem Callout */}
+      {/* School Anthem — Premium Audio Player */}
       <section className="py-20 bg-gradient-to-br from-primary-900 via-primary-800 to-accent-900 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-gold-500 blur-3xl" />
@@ -151,18 +333,59 @@ export default function About() {
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-8">
             {t('about.anthem.title')}
           </h2>
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 sm:p-12 border border-white/20 shadow-2xl">
-            <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 rounded-full bg-gold-500/20 flex items-center justify-center">
-                <Music className="w-8 h-8 text-gold-400" />
+
+          {/* Premium Audio Player */}
+          <AnthemPlayer />
+
+          {/* Lyrics Display — Expandable Card (left-aligned, dynamic map) */}
+          <div className="mt-8 bg-white/10 backdrop-blur-md rounded-2xl p-8 sm:p-12 border border-white/20 shadow-2xl">
+            {/* Verse 1 — always visible */}
+            <div className="space-y-3 text-left max-w-md mx-auto font-medium tracking-wide leading-relaxed" lang="si">
+              {anthemLyrics[0].map((line, i) => (
+                <p key={i} className="text-xl sm:text-2xl text-white leading-relaxed">{line}</p>
+              ))}
+            </div>
+
+            {/* Verses 2 & 3 — expandable */}
+            <div
+              className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                isLyricsExpanded ? 'max-h-[900px] opacity-100 mt-8' : 'max-h-0 opacity-0'
+              }`}
+            >
+              <div className="space-y-6 text-left max-w-md mx-auto font-medium tracking-wide leading-relaxed">
+                {anthemLyrics.slice(1).map((verse, vIdx) => (
+                  <div key={vIdx} className="space-y-3" lang="si">
+                    <div className="w-12 h-0.5 bg-white/20 mx-auto" />
+                    {verse.map((line, lIdx) => (
+                      <p key={lIdx} className="text-xl sm:text-2xl text-white/90 leading-relaxed">{line}</p>
+                    ))}
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="space-y-3 text-center" lang="si">
-              <p className="text-xl sm:text-2xl text-white font-medium leading-relaxed">{t('about.anthem.line1')}</p>
-              <p className="text-xl sm:text-2xl text-white font-medium leading-relaxed">{t('about.anthem.line2')}</p>
-              <p className="text-xl sm:text-2xl text-white font-medium leading-relaxed">{t('about.anthem.line3')}</p>
-              <p className="text-xl sm:text-2xl text-white font-medium leading-relaxed">{t('about.anthem.line4')}</p>
-            </div>
+
+            {/* Toggle Button */}
+            <button
+              onClick={() => setIsLyricsExpanded(!isLyricsExpanded)}
+              className="text-sm font-semibold tracking-wide text-primary-400 hover:text-primary-300 transition-colors flex items-center gap-1 mx-auto mt-6"
+            >
+              {isLyricsExpanded
+                ? language === 'si' ? 'හකුලන්න' : t('about.anthem.show_less')
+                : language === 'si' ? 'සම්පූර්ණ පද මාලාව බලන්න' : t('about.anthem.show_full')}
+              <span
+                className={`transition-transform duration-500 ease-in-out inline-block ${
+                  isLyricsExpanded ? 'rotate-180' : 'rotate-0'
+                }`}
+              >
+                {isLyricsExpanded ? (
+                  <ChevronUp className="w-4 h-4" />
+                ) : (
+                  <ChevronDown className="w-4 h-4" />
+                )}
+              </span>
+            </button>
+
+            {/* Bottom credit border */}
             <div className="mt-8 pt-6 border-t border-white/20">
               <p className="text-sm text-gray-300 italic">
                 {t('about.anthem.note')}
@@ -239,6 +462,63 @@ export default function About() {
                         <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
                           {t(milestone.descKey)}
                         </p>
+
+                        {/* 1913 Archive Document — Google Drive Inline Image Preview */}
+                        {milestone.year === '1913' && (
+                          <div className="mt-6 space-y-4">
+                            {/* Bilingual Metadata */}
+                            <div className="text-center space-y-1">
+                              <p className="text-xs text-gray-500 dark:text-gray-400 italic">
+                                {t('about.timeline.1913.image_desc')}
+                              </p>
+                              <p className="text-xs text-gray-400 dark:text-gray-500 italic" lang="si">
+                                1913 මැයි 9 වන දින තබන ලද පාසලේ මුල්ම ලොග් සටහන
+                              </p>
+                            </div>
+                            {/* High-Performance Direct Inline Image */}
+                            <div className="flex justify-center">
+                              <img
+                                src="https://lh3.googleusercontent.com/d/1oBTLD5SqrCQudAxH2ixO4Kru1OF3jGwr"
+                                alt="Official 1913 School Log Document"
+                                loading="lazy"
+                                className="w-full max-w-xl mx-auto rounded-2xl border border-slate-200/80 dark:border-slate-800/80 shadow-md bg-white dark:bg-slate-900 transition-transform duration-300 hover:scale-[1.01] cursor-zoom-in"
+                                onClick={() => setIsLightboxOpen(true)}
+                              />
+                            </div>
+                          </div>
+                        )}
+                        {/* Legacy image-based archive card for other milestones */}
+                        {milestone.imageSrc && milestone.year !== '1913' && (
+                          <div className="mt-4">
+                            <div className="w-full max-w-md mx-auto aspect-[3/1] rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-md group/log cursor-pointer relative"
+                                 onClick={() => openLightbox(milestone.imageSrc, t(milestone.imageKey))}>
+                              <img
+                                src={milestone.imageSrc}
+                                alt={t(milestone.imageKey)}
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover/log:scale-105"
+                                onError={(e) => {
+                                  e.target.onerror = null;
+                                  e.target.style.display = 'none';
+                                  e.target.nextElementSibling.style.display = 'flex';
+                                }}
+                              />
+                              <div className="hidden w-full h-full bg-gradient-to-br from-gray-900/80 to-gray-800/80 items-center justify-center flex-col text-white p-4">
+                                <p className="text-xs text-center opacity-70">Image placeholder — place <code className="bg-white/20 px-1 rounded">first-log-1913.png</code> in <code className="bg-white/20 px-1 rounded">public/images/</code></p>
+                              </div>
+                              {/* Hover overlay mask */}
+                              <div className="absolute inset-0 bg-black/0 group-hover/log:bg-black/40 transition-all duration-300 flex items-center justify-center">
+                                <div className="opacity-0 group-hover/log:opacity-100 transition-all duration-300 flex flex-col items-center gap-1.5 translate-y-2 group-hover/log:translate-y-0">
+                                  <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                    <Maximize2 className="w-4 h-4 text-white" />
+                                  </div>
+                                  <span className="text-xs font-medium text-white/90 tracking-wide">
+                                    {t(milestone.viewDocKey)}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -281,6 +561,63 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      {/* Lightbox Modal — Other Milestones */}
+      {lightboxOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm animate-fade-in"
+          onClick={closeLightbox}
+        >
+          <button
+            onClick={closeLightbox}
+            className="absolute top-4 right-4 z-10 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors flex items-center justify-center text-white border border-white/20"
+            aria-label="Close"
+          >
+            <X className="w-6 h-6" />
+          </button>
+          <div
+            className="max-w-5xl max-h-[90vh] mx-4 rounded-2xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={lightboxImage}
+              alt={lightboxTitle}
+              className="w-full h-full object-contain max-h-[85vh]"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6 pt-16">
+              <p className="text-white text-lg font-semibold text-center">
+                {lightboxTitle}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 1913 Document Lightbox Modal — In-App Zoom Preview */}
+      {isLightboxOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-sm p-4"
+          onClick={() => setIsLightboxOpen(false)}
+        >
+          <button
+            onClick={() => setIsLightboxOpen(false)}
+            className="absolute top-4 right-4 z-10 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors flex items-center justify-center text-white border border-white/20"
+            aria-label="Close Lightbox"
+          >
+            <X className="w-6 h-6" />
+          </button>
+          <div
+            className="max-w-5xl max-h-[90vh] mx-4 rounded-2xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src="https://lh3.googleusercontent.com/d/1oBTLD5SqrCQudAxH2ixO4Kru1OF3jGwr"
+              alt="Official 1913 School Log Document"
+              className="w-full h-full object-contain max-h-[85vh]"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
