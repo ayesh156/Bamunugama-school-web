@@ -319,10 +319,10 @@ export default function About() {
           <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-accent-500 blur-3xl" />
         </div>
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/20 text-white border border-white/30 mb-4">
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-slate-200/60 dark:bg-white/20 text-slate-700 dark:text-white border border-slate-300 dark:border-white/30 mb-4">
             {t('about.anthem.badge')}
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-8">
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-950 dark:text-white mt-2 mb-8">
             {t('about.anthem.title')}
           </h2>
 
