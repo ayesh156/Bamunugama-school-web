@@ -1,6 +1,7 @@
 import { ArrowRight, BookOpen, Users, Trophy, Star, FlaskConical, Laptop, Sprout, Award, Apple, Landmark } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { schoolProfile } from '../data/mockData';
 
 const newsItems = [
   {
@@ -26,11 +27,12 @@ const newsItems = [
   },
 ];
 
+// Stats driven by schoolProfile.stats from centralized data
 const stats = [
-  { icon: Users, value: '477+', labelKey: 'home.stats.students' },
-  { icon: BookOpen, value: '35+', labelKey: 'home.stats.teachers' },
-  { icon: Trophy, value: '25+', labelKey: 'home.stats.awards' },
-  { icon: Star, value: '12', labelKey: 'home.stats.clubs' },
+  { icon: Users, value: schoolProfile.stats.students.value, labelKey: schoolProfile.stats.students.label, labelKeySi: schoolProfile.stats.students.label_si },
+  { icon: BookOpen, value: schoolProfile.stats.teachers.value, labelKey: schoolProfile.stats.teachers.label, labelKeySi: schoolProfile.stats.teachers.label_si },
+  { icon: Trophy, value: schoolProfile.stats.awards.value, labelKey: schoolProfile.stats.awards.label, labelKeySi: schoolProfile.stats.awards.label_si },
+  { icon: Star, value: schoolProfile.stats.clubs.value, labelKey: schoolProfile.stats.clubs.label, labelKeySi: schoolProfile.stats.clubs.label_si },
 ];
 
 const snapshotItems = [
@@ -73,7 +75,8 @@ const snapshotItems = [
 ];
 
 export default function Home() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const isSi = language === 'si';
 
   return (
     <div>
@@ -91,12 +94,12 @@ export default function Home() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-32">
           <div className="animate-fade-in">
             <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-gold-500/20 text-gold-500 border border-gold-500/30 mb-6">
-              {t('home.hero.badge')}
+              {isSi ? schoolProfile.hero.badge_si : schoolProfile.hero.badge}
             </span>
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white leading-tight mb-6 drop-shadow-lg">
-              {t('home.hero.title_line1')}
+              {isSi ? schoolProfile.hero.titleLine1_si : schoolProfile.hero.titleLine1}
               <br />
-              <span className="text-gold-500">{t('home.hero.title_line2')}</span>
+              <span className="text-gold-500">{isSi ? schoolProfile.hero.titleLine2_si : schoolProfile.hero.titleLine2}</span>
             </h1>
             <p className="text-xl sm:text-2xl text-gray-200 font-bold mb-2" lang="si">
               {t('home.hero.motto')}
@@ -105,21 +108,21 @@ export default function Home() {
               {t('home.hero.motto_eng')}
             </p>
             <p className="text-sm text-gray-400 mb-8">
-              {t('home.hero.address')}
+              {isSi ? schoolProfile.hero.address_si : schoolProfile.hero.address}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 to="/about"
                 className="px-8 py-3 rounded-full bg-gold-500 hover:bg-gold-500/90 text-gray-900 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
               >
-                {t('home.hero.explore')}
+                {isSi ? schoolProfile.hero.explore_si : schoolProfile.hero.explore}
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 to="/contact"
                 className="px-8 py-3 rounded-full border-2 border-white/30 text-white hover:bg-white/10 transition-all duration-300 font-medium"
               >
-                {t('home.hero.contact_btn')}
+                {isSi ? schoolProfile.hero.contactBtn_si : schoolProfile.hero.contactBtn}
               </Link>
             </div>
           </div>
@@ -151,7 +154,7 @@ export default function Home() {
                   {stat.value}
                 </div>
                 <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider">
-                  {t(stat.labelKey)}
+                  {isSi ? stat.labelKeySi : stat.labelKey}
                 </div>
               </div>
             );
@@ -235,8 +238,8 @@ export default function Home() {
               </div>
               <div className="flex items-center gap-4">
                 <div>
-                  <p className="font-semibold text-gray-800 dark:text-white">{t('home.principal.name')}</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{t('home.principal.role')}</p>
+                  <p className="font-semibold text-gray-800 dark:text-white">{isSi ? schoolProfile.principal.name_si : schoolProfile.principal.name}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{isSi ? schoolProfile.principal.role_si : schoolProfile.principal.role}</p>
                 </div>
               </div>
             </div>

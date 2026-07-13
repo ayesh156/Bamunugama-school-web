@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { GraduationCap, Mail, Phone, MapPin } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { contactDetails, schoolProfile } from '../data/mockData';
 
 export default function Footer() {
   const { t } = useLanguage();
@@ -72,11 +73,11 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-accent-600 dark:text-accent-400 shrink-0 transition-colors duration-300 ease-in-out" />
-                <span className="text-sm text-gray-600 dark:text-gray-400">+94 41 222 3456</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400">{contactDetails.phone}</span>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-accent-600 dark:text-accent-400 shrink-0 transition-colors duration-300 ease-in-out" />
-                <span className="text-sm text-gray-600 dark:text-gray-400">info@bamunugama.sch.lk</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400">{contactDetails.email}</span>
               </li>
             </ul>
           </div>

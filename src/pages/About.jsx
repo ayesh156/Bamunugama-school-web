@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Target, Eye, BookOpen, Heart, Shield, Sparkles, Maximize2, X, Play, Pause, ChevronDown, ChevronUp } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { schoolAnthemData } from '../data/mockData';
+import { schoolAnthemData, historicalTimeline, schoolProfile } from '../data/mockData';
 
 const values = [
   {
@@ -24,16 +24,6 @@ const values = [
     titleKey: 'about.values.innovation.title',
     descKey: 'about.values.innovation.desc',
   },
-];
-
-const milestones = [
-  { year: '1913', titleKey: 'about.timeline.1913.title', descKey: 'about.timeline.1913.desc', imageKey: 'about.timeline.1913.image_title', imageDescKey: 'about.timeline.1913.image_desc', viewDocKey: 'about.timeline.1913.view_doc', imageSrc: '/images/first-log-1913.png' },
-  { year: '1917', titleKey: 'about.timeline.1917.title', descKey: 'about.timeline.1917.desc' },
-  { year: '1940', titleKey: 'about.timeline.1940.title', descKey: 'about.timeline.1940.desc' },
-  { year: '1957', titleKey: 'about.timeline.1957.title', descKey: 'about.timeline.1957.desc' },
-  { year: '1965', titleKey: 'about.timeline.1965.title', descKey: 'about.timeline.1965.desc' },
-  { year: '1977', titleKey: 'about.timeline.1977.title', descKey: 'about.timeline.1977.desc' },
-  { year: '2026', titleKey: 'about.timeline.2026.title', descKey: 'about.timeline.2026.desc' },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -219,6 +209,8 @@ export default function About() {
     setLightboxTitle('');
   };
 
+  const milestones = historicalTimeline;
+
   return (
     <div className="pt-20">
       {/* Page Header */}
@@ -294,7 +286,7 @@ export default function About() {
               </div>
               <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-3">{t('about.vision.title')}</h3>
               <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                {language === 'si' ? t('about.vision.text') : t('about.vision.text')}
+                {t('about.vision.text')}
               </p>
               {language === 'si' && (
                 <p className="text-gray-500 dark:text-gray-400 text-sm mt-2 italic" lang="si">
@@ -308,7 +300,7 @@ export default function About() {
               </div>
               <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-3">{t('about.mission.title')}</h3>
               <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                {language === 'en' ? t('about.mission.text') : t('about.mission.text')}
+                {t('about.mission.text')}
               </p>
               {language === 'en' && (
                 <p className="text-gray-500 dark:text-gray-400 text-sm mt-2 italic" lang="si">
@@ -464,22 +456,20 @@ export default function About() {
                         </p>
 
                         {/* 1913 Archive Document — Google Drive Inline Image Preview */}
-                        {milestone.year === '1913' && (
+                        {milestone.year === '1913' && milestone.hasDocument && (
                           <div className="mt-6 space-y-4">
-                            {/* Bilingual Metadata */}
                             <div className="text-center space-y-1">
                               <p className="text-xs text-gray-500 dark:text-gray-400 italic">
-                                {t('about.timeline.1913.image_desc')}
+                                {t(milestone.imageDescKey)}
                               </p>
                               <p className="text-xs text-gray-400 dark:text-gray-500 italic" lang="si">
                                 1913 මැයි 9 වන දින තබන ලද පාසලේ මුල්ම ලොග් සටහන
                               </p>
                             </div>
-                            {/* High-Performance Direct Inline Image */}
                             <div className="flex justify-center">
                               <img
-                                src="https://lh3.googleusercontent.com/d/1oBTLD5SqrCQudAxH2ixO4Kru1OF3jGwr"
-                                alt="Official 1913 School Log Document"
+                                src={milestone.docImageUrl}
+                                alt={milestone.docAlt}
                                 loading="lazy"
                                 className="w-full max-w-xl mx-auto rounded-2xl border border-slate-200/80 dark:border-slate-800/80 shadow-md bg-white dark:bg-slate-900 transition-transform duration-300 hover:scale-[1.01] cursor-zoom-in"
                                 onClick={() => setIsLightboxOpen(true)}
@@ -490,8 +480,10 @@ export default function About() {
                         {/* Legacy image-based archive card for other milestones */}
                         {milestone.imageSrc && milestone.year !== '1913' && (
                           <div className="mt-4">
-                            <div className="w-full max-w-md mx-auto aspect-[3/1] rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-md group/log cursor-pointer relative"
-                                 onClick={() => openLightbox(milestone.imageSrc, t(milestone.imageKey))}>
+                            <div
+                              className="w-full max-w-md mx-auto aspect-[3/1] rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-md group/log cursor-pointer relative"
+                              onClick={() => openLightbox(milestone.imageSrc, t(milestone.imageKey))}
+                            >
                               <img
                                 src={milestone.imageSrc}
                                 alt={t(milestone.imageKey)}
@@ -503,9 +495,11 @@ export default function About() {
                                 }}
                               />
                               <div className="hidden w-full h-full bg-gradient-to-br from-gray-900/80 to-gray-800/80 items-center justify-center flex-col text-white p-4">
-                                <p className="text-xs text-center opacity-70">Image placeholder — place <code className="bg-white/20 px-1 rounded">first-log-1913.png</code> in <code className="bg-white/20 px-1 rounded">public/images/</code></p>
+                                <p className="text-xs text-center opacity-70">
+                                  Image placeholder — place <code className="bg-white/20 px-1 rounded">first-log-1913.png</code> in{' '}
+                                  <code className="bg-white/20 px-1 rounded">public/images/</code>
+                                </p>
                               </div>
-                              {/* Hover overlay mask */}
                               <div className="absolute inset-0 bg-black/0 group-hover/log:bg-black/40 transition-all duration-300 flex items-center justify-center">
                                 <div className="opacity-0 group-hover/log:opacity-100 transition-all duration-300 flex flex-col items-center gap-1.5 translate-y-2 group-hover/log:translate-y-0">
                                   <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
@@ -555,7 +549,7 @@ export default function About() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
               <div className="p-6 sm:p-8">
                 <h3 className="text-xl sm:text-2xl font-bold text-white">{t('about.org.title')}</h3>
-                <p className="text-sm text-gray-300 mt-2">{t('about.org.roles')}</p>
+                <p className="text-sm text-gray-300 mt-2">{language === 'si' ? schoolProfile.organization.roles_si : schoolProfile.organization.roles}</p>
               </div>
             </div>
           </div>

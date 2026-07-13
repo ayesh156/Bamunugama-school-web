@@ -5,9 +5,10 @@ import {
   Building2, Globe, School, ArrowUpRight,
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { contactDetails, schoolProfile } from '../data/mockData';
 
 export default function Contact() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -51,68 +52,55 @@ export default function Contact() {
     setTimeout(() => setSubmitted(false), 5000);
   };
 
+  const isSi = language === 'si';
+
+  // Build school info cards from centralized data schemas — NO translation-key fallback.
   const schoolInfoCards = [
-    {
-      icon: School,
-      labelKey: 'contact.info.school_name',
-      label: null,
-      value: null,
-      fullWidth: true,
-      highlight: true,
-    },
+   
     {
       icon: MapPin,
-      labelKey: 'contact.info.address',
-      label: t('contact.info.address'),
-      value: t('contact.info.address_value'),
+      label: isSi ? contactDetails.address.label_si : contactDetails.address.label,
+      value: isSi ? contactDetails.address.value_si : contactDetails.address.value,
     },
     {
       icon: GraduationCap,
-      labelKey: 'contact.info.principal',
-      label: t('contact.info.principal'),
-      value: t('contact.info.principal_value'),
+      label: isSi ? contactDetails.principal.label_si : contactDetails.principal.label,
+      value: isSi ? contactDetails.principal.value_si : contactDetails.principal.value,
     },
     {
       icon: ShieldCheck,
-      labelKey: 'contact.info.classification',
-      label: t('contact.info.classification'),
-      value: t('contact.info.classification_value'),
+      label: isSi ? contactDetails.classification.label_si : contactDetails.classification.label,
+      value: isSi ? contactDetails.classification.value_si : contactDetails.classification.value,
     },
     {
       icon: Calendar,
-      labelKey: 'contact.info.established',
-      label: t('contact.info.established'),
-      value: t('contact.info.established_value'),
+      label: isSi ? contactDetails.established.label_si : contactDetails.established.label,
+      value: isSi ? contactDetails.established.value_si : contactDetails.established.value,
     },
     {
       icon: Award,
-      labelKey: 'contact.info.codes',
-      label: t('contact.info.codes'),
-      value: t('contact.info.codes_value'),
+      label: isSi ? contactDetails.codes.label_si : contactDetails.codes.label,
+      value: isSi ? contactDetails.codes.value_si : contactDetails.codes.value,
     },
     {
       icon: Building2,
-      labelKey: 'contact.info.administration',
-      label: t('contact.info.administration'),
-      value: t('contact.info.administration_value'),
+      label: isSi ? contactDetails.administration.label_si : contactDetails.administration.label,
+      value: isSi ? contactDetails.administration.value_si : contactDetails.administration.value,
     },
     {
       icon: Phone,
-      labelKey: 'contact.info.phone',
-      label: t('contact.info.phone'),
-      value: t('contact.info.phone_value'),
+      label: isSi ? contactDetails.phoneLabel.label_si : contactDetails.phoneLabel.label,
+      value: contactDetails.phone,
     },
     {
       icon: Mail,
-      labelKey: 'contact.info.email',
-      label: t('contact.info.email'),
-      value: t('contact.info.email_value'),
+      label: isSi ? contactDetails.emailLabel.label_si : contactDetails.emailLabel.label,
+      value: contactDetails.email,
     },
     {
       icon: Globe,
-      labelKey: 'contact.info.website',
-      label: t('contact.info.website'),
-      value: t('contact.info.website_value'),
+      label: isSi ? contactDetails.websiteLabel.label_si : contactDetails.websiteLabel.label,
+      value: contactDetails.website,
       isLink: true,
     },
   ];
@@ -151,14 +139,14 @@ export default function Contact() {
               <div className="relative">
                 <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-6 flex items-center gap-2">
                   <School className="w-5 h-5 text-primary-500" />
-                  <span>{t('contact.info.school_name')}</span>
+                  <span>{isSi ? contactDetails.schoolName.value_si : contactDetails.schoolName.value}</span>
                 </h2>
                 <div className="grid grid-cols-1 gap-4">
                   {schoolInfoCards.map((info) => {
                     const Icon = info.icon;
                     return (
                       <div
-                        key={info.labelKey}
+                        key={info.label || info.value}
                         className={`group flex items-start gap-4 p-4 rounded-xl transition-all duration-300 ${
                           info.highlight
                             ? 'bg-gradient-to-br from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 border border-primary-100 dark:border-primary-800/30'
@@ -202,7 +190,7 @@ export default function Contact() {
                                   : 'text-sm font-semibold text-gray-700 dark:text-gray-200'
                               } break-words`}
                             >
-                              {info.value || info.labelKey}
+                              {info.value}
                             </p>
                           )}
                         </div>

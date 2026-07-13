@@ -1,73 +1,20 @@
 import { useState } from 'react';
 import { BarChart3, Users, GraduationCap, BookOpen, Activity } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { examinationTrends, studentDemographics } from '../data/mockData';
 
-// ─── 3 Primary National Exam 6-Year Performance Data ───
-
-const scholarshipTrends = [
-  { year: '2020', sat: 49, passed: 2, pct: 6 },
-  { year: '2021', sat: 52, passed: 6, pct: 4 },
-  { year: '2022', sat: 34, passed: 6, pct: 18 },
-  { year: '2023', sat: 42, passed: 7, pct: 17 },
-  { year: '2024', sat: 44, passed: 5, pct: 11 },
-  { year: '2025', sat: 48, passed: 6, pct: 10 },
-];
-
-const olTrends = [
-  { year: '2020', sat: 35, passed: 32, pct: 91 },
-  { year: '2021', sat: 39, passed: 35, pct: 90 },
-  { year: '2022', sat: 26, passed: 24, pct: 92 },
-  { year: '2023', sat: 43, passed: 36, pct: 84 },
-  { year: '2024', sat: 38, passed: 34, pct: 90 },
-  { year: '2025', sat: 38, passed: 28, pct: 74 },
-];
-
-const alTrends = [
-  { year: '2020', sat: 9, passed: 5, pct: 55 },
-  { year: '2021', sat: 13, passed: 6, pct: 46 },
-  { year: '2022', sat: 17, passed: 10, pct: 59 },
-  { year: '2023', sat: 6, passed: 1, pct: 33 },
-  { year: '2024', sat: 4, passed: 1, pct: 25 },
-  { year: '2025', sat: 8, passed: 3, pct: 38 },
-];
-
+// ─── 3 Primary National Exam 6-Year Performance Data (from centralized mockData) ───
 const examTrendsMap = {
-  scholarship: scholarshipTrends,
-  ol: olTrends,
-  al: alTrends,
+  scholarship: examinationTrends.scholarship,
+  ol: examinationTrends.ol,
+  al: examinationTrends.al,
 };
 
-// ─── School Grade Statistics / Enrollment Analytics ───
-
-const primaryGrades = [
-  { grade: '1', female: 14, male: 15, total: 29 },
-  { grade: '2', female: 19, male: 17, total: 36 },
-  { grade: '3A', female: 9, male: 15, total: 24 },
-  { grade: '3B', female: 9, male: 13, total: 22 },
-  { grade: '4', female: 15, male: 10, total: 25 },
-  { grade: '5A', female: 13, male: 10, total: 23 },
-  { grade: '5B', female: 13, male: 10, total: 23 },
-];
-
-const primaryTotals = { female: 92, male: 90, total: 182 };
-
-const secondaryGrades = [
-  { grade: '6A', female: 10, male: 13, total: 23 },
-  { grade: '6B', female: 11, male: 12, total: 23 },
-  { grade: '7A', female: 10, male: 12, total: 22 },
-  { grade: '7B', female: 15, male: 9, total: 24 },
-  { grade: '8A', female: 10, male: 13, total: 23 },
-  { grade: '8B', female: 10, male: 13, total: 23 },
-  { grade: '9', female: 16, male: 17, total: 33 },
-  { grade: '10A', female: 16, male: 11, total: 27 },
-  { grade: '10B', female: 13, male: 11, total: 24 },
-  { grade: '11A', female: 12, male: 17, total: 29 },
-  { grade: '11B', female: 11, male: 14, total: 25 },
-  { grade: '12', female: 5, male: 9, total: 14 },
-  { grade: '13', female: 8, male: 2, total: 10 },
-];
-
-const secondaryTotals = { female: 147, male: 153, total: 300 };
+// ─── School Grade Statistics / Enrollment Analytics (from centralized mockData) ───
+const primaryGrades = studentDemographics.primary.grades;
+const primaryTotals = studentDemographics.primary.totals;
+const secondaryGrades = studentDemographics.secondary.grades;
+const secondaryTotals = studentDemographics.secondary.totals;
 
 export default function Results() {
   const { t, language } = useLanguage();
