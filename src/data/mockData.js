@@ -253,7 +253,63 @@ export const studentDemographics = {
   },
 };
 
-// ─── 6. Historical Timeline (Milestone Nodes) ──────────────────────────
+// ─── 6. Current School Status (වර්තමාන තත්වය) - Dual Language Grid ───
+export const currentStatusData = {
+  header: {
+    badge: { en: "Current Overview", si: "වර්තමාන තත්ත්වය" },
+    title: { en: "Institutional Progress & Statistics", si: "පාසලේ වර්තමාන තත්ත්වය සහ ප්‍රගතිය" },
+    subtitle: { en: "A glance at our academic achievements, infrastructure enhancements, and student welfare.", si: "අධ්‍යයන ජයග්‍රහණ, යටිතල පහසුකම් සංවර්ධනය සහ සිසුන්ගේ ප්‍රගතිය පිළිබඳ කෙටි විමසුමක්." }
+  },
+  stats: [
+    { value: "477", label: { en: "Active Students (2023)", si: "සිසුන් සංඛ්‍යාව (2023)" } },
+    { value: "50+", label: { en: "Grade 1 Applications", si: "පළමු ශ්‍රේණිය ඉල්ලුම්පත්" } },
+    { value: "92%", label: { en: "O/L Examination Pass Rate", si: "අ.පො.ස. (සා/පෙ) සමස්ත ප්‍රතිඵලය" } },
+    { value: "08", label: { en: "Students with 9 A's", si: "A සාමාර්ථ 9 ලබාගත් සිසුන්" } }
+  ],
+  pillars: [
+    {
+      id: "academic",
+      title: { en: "Academic Excellence", si: "අධ්‍යයන ප්‍රගතිය" },
+      description: {
+        en: "Out of 26 candidates presented for the G.C.E. O/L examination, 24 students qualified for G.C.E. A/L classes, marking a spectacular 92% advancement. Furthermore, 10 students successfully cleared the G.C.E. A/L examinations, while 7 students surpassed the cut-off marks in the Grade 5 Scholarship examination.",
+        si: "අ.පො.ස.(සා/පෙ) විභාගයට ඉදිරිපත් වූ සිසුන් 26 දෙනාගෙන් 24 දෙනෙකුම අ.පො.ස.(උ/පෙ) සඳහා සුදුසුකම් ලබා ඇති අතර සමස්ත ප්‍රතිඵලය 92% කි. අ.පො.ස.(උ/පෙ) සිසුන් 10ක් සමත් වී ඇති අතර, 5 ශ්‍රේණිය ශිෂ්‍යත්ව විභාගයෙන් කඩඉම් ලකුණ ඉක්මවා සිසුන් 7 දෙනෙකු සමත් වී ඇත."
+      }
+    },
+    {
+      id: "infrastructure",
+      title: { en: "Modern Infrastructure & Tech", si: "යටිතල පහසුකම් සහ තාක්ෂණය" },
+      description: {
+        en: "The science lab, mathematics laboratory, and home science units have been completely modernized with highly graphic, visually stimulating educational wall displays. Technology has been robustly introduced into the primary section and the school library, supported by a state-of-the-art computer unit equipped with 10 high-performance workstations donated by the Ministry of Education.",
+        si: "විද්‍යාගාරය, ගණිතගාරය සහ ගෘහ විද්‍යාගාරය නවීකරණය කර සිත්ගන්නාසුලු චිත්‍රකර්ෂණීය ඉගෙනුම් ආධාරක බිත්ති සහිතව සකසා ඇත. මේ වන විට ප්‍රාථමික අංශයට සහ පුස්තකාලයට තාක්ෂණය දියුණු කර ඇති අතර, අධ්‍යාපන අමාත්‍යාංශය මඟින් ලැබුණු පරිගණක 10කින් පරිගණක ඒකකය සන්නද්ධ කර ඇත."
+      }
+    },
+    {
+      id: "welfare",
+      title: { en: "Student Welfare & Co-Curricular", si: "ශිෂ්‍ය සුබසාධනය සහ බාහිර ක්‍රියාකාරකම්" },
+      description: {
+        en: "To uplift student health and nutrition, a weekly Friday Herbal Porridge (Kola Kanda) project is executed for all students from Grades 1-13. Culturally, the school achieved immense pride by winning numerous awards in All-Island Art, Language, Dancing, and Music competitions, reflecting our student body's diverse co-curricular capabilities.",
+        si: "සිසුන්ගේ පෝෂණ මට්ටම දියුණු කිරීම වෙනුවෙන් සෑම සිකුරාදා දිනම 1-13 සියලු සිසුන් සඳහා කොළ කැඳ ව්‍යාපෘතියක් ක්‍රියාත්මක වේ. මීට අමතරව සමස්ත ලංකා මට්ටමින් පැවැත්වුණු භාෂා, චිත්‍ර, නැටුම් සහ සංගීත තරඟවලින් විශිෂ්ට ජයග්‍රහණ රාශියක් අත්පත් කර ගැනීමට අප සිසුන් සමත් වී ඇත."
+      }
+    },
+    {
+      id: "environment",
+      title: { en: "Eco-Friendly Agriculture", si: "හරිත කෘෂිකාර්මික පරිසරය" },
+      description: {
+        en: "The school premises have been transformed into a pleasant, eco-friendly environment cultivating rare medicinal herbs, organic fruits, and vegetables. Year after year, the combined academic, administrative, and non-academic staff work in perfect alignment to establish this institution as the region's most popular and sought-after school.",
+        si: "පාසල් ගෙවත්ත තුළ දුර්ලභ ගණයේ ඖෂධ, පළතුරු සහ එළවළු වගා කරමින් මුළු පරිසරයම ප්‍රියමනාප හරිත පරිසරයක් බවට පත් කර ඇත. වසරින් වසර ප්‍රතිඵල වර්ධනය කර ගනිමින් ප්‍රදේශයේ ජනප්‍රියම පාසලක් බවට පත් කිරීම සමස්ත ශාස්ත්‍රීය හා පරිපාලන කාර්ය මණ්ඩලයේ ඒකායන පැතුමයි."
+      }
+    }
+  ]
+};
+
+// ─── 7. Gallery Page Content ────────────────────────────────────────
+export const galleryContent = {
+  badge: { en: "Media Gallery", si: "ඡායාරූප ගැලරිය" },
+  title: { en: "Moments of Excellence", si: "පාසල් ජීවිතයේ සොඳුරු මතකයන්" },
+  subtitle: { en: "Explore captured memories of our students' academic, cultural, and sporting achievements.", si: "අධ්‍යයන, සංස්කෘතික සහ ක්‍රීඩා ක්ෂේත්‍රයන්ගෙන් අප සිසුන් ලැබූ ජයග්‍රහණවල මතකයන් මෙතැනින් බලන්න." }
+};
+
+// ─── 8. Historical Timeline (Milestone Nodes) ──────────────────────────
 export const historicalTimeline = [
   {
     year: '1913',
@@ -265,7 +321,7 @@ export const historicalTimeline = [
     imageSrc: '/images/first-log-1913.png',
     hasDocument: true,
     docImageUrl:
-      'https://lh3.googleusercontent.com/d/1oBTLD5SqrCQudAxH2ixO4Kru1OF3jGwr',
+      '/images/log_document.png',
     docAlt: 'Official 1913 School Log Document',
   },
   {

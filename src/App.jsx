@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Events from './pages/Events';
 import Gallery from './pages/Gallery';
+import NotFound from './pages/NotFound';
 import Results from './pages/Results';
 import Contact from './pages/Contact';
 import Login from './pages/admin/Login';
@@ -52,6 +53,7 @@ function App() {
                       <Route path="/gallery" element={<Gallery />} />
                       <Route path="/results" element={<Results />} />
                       <Route path="/contact" element={<Contact />} />
+                      <Route path="*" element={<NotFound />} />
                     </Routes>
                   </main>
                   <Footer />

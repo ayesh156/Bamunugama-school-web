@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { X, ChevronLeft, ChevronRight, ImageIcon, Sparkles } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ImageIcon, Sparkles, GraduationCap, Building2, Heart, Leaf, TrendingUp } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { galleryContent } from '../data/mockData';
 
 const galleryCategories = [
   {
@@ -95,15 +96,15 @@ export default function Gallery() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.2em] bg-white/10 text-white border border-white/20 backdrop-blur-md mb-5 shadow-lg shadow-white/5">
             <Sparkles className="w-3.5 h-3.5" />
-            {t('gallery.header.badge')}
+            {galleryContent.badge[language]}
           </span>
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white mb-5 tracking-tight">
             <span className="bg-gradient-to-r from-white via-primary-200 to-white bg-clip-text text-transparent">
-              {t('gallery.header.title')}
+              {galleryContent.title[language]}
             </span>
           </h1>
           <p className="text-lg sm:text-xl text-gray-200/90 max-w-2xl mx-auto font-light leading-relaxed">
-            {t('gallery.header.subtitle')}
+            {galleryContent.subtitle[language]}
           </p>
           <div className="mt-8 flex justify-center">
             <div className="h-1 w-24 bg-gradient-to-r from-primary-400 to-accent-400 rounded-full" />
@@ -123,10 +124,9 @@ export default function Gallery() {
                   onClick={() => setActiveCategory(category.id)}
                   className={`
                     relative px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ease-out cursor-pointer
-                    ${
-                      isActive
-                        ? 'text-white shadow-xl shadow-primary-500/30 scale-105'
-                        : 'text-slate-800 dark:text-white bg-white dark:bg-slate-800 shadow-md dark:shadow-slate-900/50 hover:bg-gray-50 dark:hover:bg-slate-700'
+                    ${isActive
+                      ? 'text-white shadow-xl shadow-primary-500/30 scale-105'
+                      : 'text-slate-800 dark:text-white bg-white dark:bg-slate-800 shadow-md dark:shadow-slate-900/50 hover:bg-gray-50 dark:hover:bg-slate-700'
                     }
                   `}
                 >
@@ -165,12 +165,7 @@ export default function Gallery() {
                 return (
                   <div
                     key={index}
-                    className="
-                      group relative rounded-2xl overflow-hidden bg-white dark:bg-slate-800
-                      shadow-md hover:shadow-2xl hover:shadow-primary-500/10 dark:hover:shadow-primary-500/5
-                      transition-all duration-500 ease-out cursor-pointer
-                      hover:-translate-y-1 hover:scale-[1.02]
-                    "
+                    className="group relative rounded-2xl overflow-hidden bg-white dark:bg-slate-800 shadow-md hover:shadow-2xl hover:shadow-primary-500/10 dark:hover:shadow-primary-500/5 transition-all duration-500 ease-out cursor-pointer hover:-translate-y-1 hover:scale-[1.02]"
                     style={{ animationDelay: `${index * 0.08}s` }}
                     onClick={() => openModal(index)}
                     onKeyDown={(e) => e.key === 'Enter' && openModal(index)}

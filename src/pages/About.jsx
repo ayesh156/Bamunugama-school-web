@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { Target, Eye, BookOpen, Heart, Shield, Sparkles, Maximize2, X, Play, Pause, ChevronDown, ChevronUp } from 'lucide-react';
+import { Target, Eye, BookOpen, Heart, Shield, Sparkles, Maximize2, X, Play, Pause, ChevronDown, ChevronUp, GraduationCap, Building2, Leaf, TrendingUp } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { schoolAnthemData, historicalTimeline, schoolProfile } from '../data/mockData';
+import { schoolAnthemData, historicalTimeline, schoolProfile, currentStatusData } from '../data/mockData';
 
 const values = [
   {
@@ -387,6 +387,97 @@ export default function About() {
         </div>
       </section>
 
+      {/* ==================== CURRENT STATUS SECTION (Dual-Language Grid) ==================== */}
+      <section className="relative py-16 lg:py-20 bg-slate-50 dark:bg-slate-800/50 transition-colors duration-300 ease-in-out">
+        {/* Decorative top divider */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-300 dark:via-slate-600 to-transparent" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="text-center mb-12 lg:mb-16">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-[0.2em] bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 border border-primary-200 dark:border-primary-800 mb-4">
+              <Sparkles className="w-3 h-3" />
+              {currentStatusData.header.badge[language] || currentStatusData.header.badge.en}
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-800 dark:text-white mb-4 tracking-tight">
+              {currentStatusData.header.title[language] || currentStatusData.header.title.en}
+            </h2>
+            <p className="text-base sm:text-lg text-slate-500 dark:text-slate-400 max-w-3xl mx-auto font-light leading-relaxed">
+              {currentStatusData.header.subtitle[language] || currentStatusData.header.subtitle.en}
+            </p>
+            <div className="mt-6 flex justify-center">
+              <div className="h-1 w-20 bg-gradient-to-r from-primary-400 to-accent-400 rounded-full" />
+            </div>
+          </div>
+
+          {/* Stats row */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 lg:mb-16">
+            {currentStatusData.stats.map((stat, idx) => (
+              <div
+                key={idx}
+                className="relative group p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/50 shadow-lg shadow-slate-200/50 dark:shadow-black/10 hover:shadow-xl hover:shadow-primary-500/5 transition-all duration-300 ease-out hover:-translate-y-1 text-center overflow-hidden"
+              >
+                {/* Hover glow */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-transparent to-accent-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
+                <div className="relative z-10">
+                  <p className="text-3xl sm:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-accent-600 dark:from-primary-400 dark:to-accent-400 mb-2">
+                    {stat.value}
+                  </p>
+                  <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium">
+                    {stat.label[language] || stat.label.en}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Pillars grid - 2x2 masonry */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+            {currentStatusData.pillars.map((pillar, idx) => {
+              const iconMap = {
+                academic: GraduationCap,
+                infrastructure: Building2,
+                welfare: Heart,
+                environment: Leaf,
+              };
+              const PillarIcon = iconMap[pillar.id] || TrendingUp;
+
+              return (
+                <div
+                  key={pillar.id}
+                  className="group relative p-6 sm:p-8 lg:p-10 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/50 shadow-lg shadow-slate-200/50 dark:shadow-black/10 hover:shadow-xl hover:shadow-primary-500/5 transition-all duration-300 ease-out hover:-translate-y-1 overflow-hidden"
+                  style={{ animationDelay: `${idx * 0.1}s` }}
+                >
+                  {/* Background decorative gradient */}
+                  <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-gradient-to-br from-primary-500/10 via-accent-500/5 to-transparent blur-2xl group-hover:from-primary-500/20 group-hover:via-accent-500/10 transition-all duration-500" />
+                  <div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-gradient-to-tr from-primary-500/10 via-accent-500/5 to-transparent blur-2xl group-hover:from-primary-500/20 group-hover:via-accent-500/10 transition-all duration-500" />
+
+                  {/* Left accent bar */}
+                  <div className="absolute left-0 top-8 bottom-8 w-1 rounded-r-full bg-gradient-to-b from-primary-500 via-accent-500 to-primary-400 opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
+
+                  <div className="relative z-10 pl-5">
+                    {/* Icon + Title row */}
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500/10 to-accent-500/10 dark:from-primary-400/20 dark:to-accent-400/20 flex items-center justify-center ring-1 ring-primary-200 dark:ring-primary-800/50 group-hover:ring-primary-400 dark:group-hover:ring-primary-600 transition-all duration-300">
+                        <PillarIcon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                      </div>
+                      <h3 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors duration-300">
+                        {pillar.title[language] || pillar.title.en}
+                      </h3>
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
+                      {pillar.description[language] || pillar.description.en}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* Core Values */}
       <section className="py-20 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -605,7 +696,7 @@ export default function About() {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src="https://lh3.googleusercontent.com/d/1oBTLD5SqrCQudAxH2ixO4Kru1OF3jGwr"
+              src="/images/log_document.png"
               alt="Official 1913 School Log Document"
               className="w-full h-full object-contain max-h-[85vh]"
             />
